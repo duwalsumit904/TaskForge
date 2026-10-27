@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     app_name: str = "TaskForge"
     environment: str = "development"
     debug: bool = False
+    database_url: str
 
 
 @lru_cache
