@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,6 +14,12 @@ class EmailAlreadyRegisteredError(Exception):
     def __init__(self, email: str) -> None:
         super().__init__("Email already registered")
         self.email = email
+
+
+class UserNotFoundError(Exception):
+    def __init__(self, user_id: uuid.UUID) -> None:
+        super().__init__("User Not Found")
+        self.user_id = user_id
 
 
 class UserService:
@@ -37,5 +44,12 @@ class UserService:
         except IntegrityError:
             await self.session.rollback()
             raise EmailAlreadyRegisteredError(data.email) from None
+
+        return user
+
+    async def get_user_by_id(self, user_id: uuid.UUID) -> User:
+        user = await self.repo.get_by_id(user_id)
+        if user is None:
+            raise UserNotFoundError(user_id)
 
         return user
