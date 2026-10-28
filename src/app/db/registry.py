@@ -1,4 +1,1 @@
-"""
-Author: Sumit
-Created: 10/27/2026
-"""
+from app.modules.organizations.models import Organization  # noqa: F401
