@@ -12,12 +12,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.db.session import get_session
 from app.modules.organizations.router import router as organizations_router
+from app.modules.users.router import router as users_router
 
 settings = get_settings()
 
 app = FastAPI(title=settings.app_name, debug=settings.debug)
 
 app.include_router(organizations_router)
+
+app.include_router(users_router)
 
 
 @app.get("/health")
